@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedTimelineRouteImport } from './routes/_authenticated/timeline'
 import { Route as AuthenticatedRecordRouteImport } from './routes/_authenticated/record'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedChoosePathRouteImport } from './routes/_authenticated/choose.$path'
@@ -36,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedTimelineRoute = AuthenticatedTimelineRouteImport.update({
+  id: '/timeline',
+  path: '/timeline',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedRecordRoute = AuthenticatedRecordRouteImport.update({
   id: '/record',
   path: '/record',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRoute
   '/record': typeof AuthenticatedRecordRoute
+  '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRoutesByTo {
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRoute
   '/record': typeof AuthenticatedRecordRoute
+  '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRoutesById {
@@ -76,13 +84,28 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/app': typeof AuthenticatedAppRoute
   '/_authenticated/record': typeof AuthenticatedRecordRoute
+  '/_authenticated/timeline': typeof AuthenticatedTimelineRoute
   '/_authenticated/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/app' | '/record' | '/choose/$path'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/app'
+    | '/record'
+    | '/timeline'
+    | '/choose/$path'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/app' | '/record' | '/choose/$path'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/app'
+    | '/record'
+    | '/timeline'
+    | '/choose/$path'
   id:
     | '__root__'
     | '/'
@@ -91,6 +114,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/app'
     | '/_authenticated/record'
+    | '/_authenticated/timeline'
     | '/_authenticated/choose/$path'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +155,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/timeline': {
+      id: '/_authenticated/timeline'
+      path: '/timeline'
+      fullPath: '/timeline'
+      preLoaderRoute: typeof AuthenticatedTimelineRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/record': {
       id: '/_authenticated/record'
       path: '/record'
@@ -158,12 +189,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRoute
   AuthenticatedRecordRoute: typeof AuthenticatedRecordRoute
+  AuthenticatedTimelineRoute: typeof AuthenticatedTimelineRoute
   AuthenticatedChoosePathRoute: typeof AuthenticatedChoosePathRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRoute,
   AuthenticatedRecordRoute: AuthenticatedRecordRoute,
+  AuthenticatedTimelineRoute: AuthenticatedTimelineRoute,
   AuthenticatedChoosePathRoute: AuthenticatedChoosePathRoute,
 }
 
