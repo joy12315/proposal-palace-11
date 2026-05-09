@@ -15,6 +15,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRecordRouteImport } from './routes/_authenticated/record'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedChoosePathRouteImport } from './routes/_authenticated/choose.$path'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -45,6 +46,11 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedChoosePathRoute = AuthenticatedChoosePathRouteImport.update({
+  id: '/choose/$path',
+  path: '/choose/$path',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRoute
   '/record': typeof AuthenticatedRecordRoute
+  '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRoute
   '/record': typeof AuthenticatedRecordRoute
+  '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,13 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/app': typeof AuthenticatedAppRoute
   '/_authenticated/record': typeof AuthenticatedRecordRoute
+  '/_authenticated/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/app' | '/record'
+  fullPaths: '/' | '/login' | '/signup' | '/app' | '/record' | '/choose/$path'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/app' | '/record'
+  to: '/' | '/login' | '/signup' | '/app' | '/record' | '/choose/$path'
   id:
     | '__root__'
     | '/'
@@ -82,6 +91,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/app'
     | '/_authenticated/record'
+    | '/_authenticated/choose/$path'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -135,17 +145,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/choose/$path': {
+      id: '/_authenticated/choose/$path'
+      path: '/choose/$path'
+      fullPath: '/choose/$path'
+      preLoaderRoute: typeof AuthenticatedChoosePathRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRoute
   AuthenticatedRecordRoute: typeof AuthenticatedRecordRoute
+  AuthenticatedChoosePathRoute: typeof AuthenticatedChoosePathRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRoute,
   AuthenticatedRecordRoute: AuthenticatedRecordRoute,
+  AuthenticatedChoosePathRoute: AuthenticatedChoosePathRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
