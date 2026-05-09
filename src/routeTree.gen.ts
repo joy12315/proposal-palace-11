@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedVaultRouteImport } from './routes/_authenticated/vault'
 import { Route as AuthenticatedTimelineRouteImport } from './routes/_authenticated/timeline'
 import { Route as AuthenticatedSubscribeRouteImport } from './routes/_authenticated/subscribe'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
@@ -39,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedVaultRoute = AuthenticatedVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedTimelineRoute = AuthenticatedTimelineRouteImport.update({
   id: '/timeline',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/subscribe': typeof AuthenticatedSubscribeRoute
   '/timeline': typeof AuthenticatedTimelineRoute
+  '/vault': typeof AuthenticatedVaultRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRoutesByTo {
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/subscribe': typeof AuthenticatedSubscribeRoute
   '/timeline': typeof AuthenticatedTimelineRoute
+  '/vault': typeof AuthenticatedVaultRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRoutesById {
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/subscribe': typeof AuthenticatedSubscribeRoute
   '/_authenticated/timeline': typeof AuthenticatedTimelineRoute
+  '/_authenticated/vault': typeof AuthenticatedVaultRoute
   '/_authenticated/choose/$path': typeof AuthenticatedChoosePathRoute
 }
 export interface FileRouteTypes {
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/subscribe'
     | '/timeline'
+    | '/vault'
     | '/choose/$path'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/subscribe'
     | '/timeline'
+    | '/vault'
     | '/choose/$path'
   id:
     | '__root__'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/subscribe'
     | '/_authenticated/timeline'
+    | '/_authenticated/vault'
     | '/_authenticated/choose/$path'
   fileRoutesById: FileRoutesById
 }
@@ -190,6 +202,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/vault': {
+      id: '/_authenticated/vault'
+      path: '/vault'
+      fullPath: '/vault'
+      preLoaderRoute: typeof AuthenticatedVaultRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/timeline': {
       id: '/_authenticated/timeline'
@@ -250,6 +269,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSubscribeRoute: typeof AuthenticatedSubscribeRoute
   AuthenticatedTimelineRoute: typeof AuthenticatedTimelineRoute
+  AuthenticatedVaultRoute: typeof AuthenticatedVaultRoute
   AuthenticatedChoosePathRoute: typeof AuthenticatedChoosePathRoute
 }
 
@@ -260,6 +280,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedSubscribeRoute: AuthenticatedSubscribeRoute,
   AuthenticatedTimelineRoute: AuthenticatedTimelineRoute,
+  AuthenticatedVaultRoute: AuthenticatedVaultRoute,
   AuthenticatedChoosePathRoute: AuthenticatedChoosePathRoute,
 }
 
