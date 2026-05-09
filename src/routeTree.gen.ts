@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTimelineRouteImport } from './routes/_authenticated/timeline'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedRecordRouteImport } from './routes/_authenticated/record'
 import { Route as AuthenticatedMailboxRouteImport } from './routes/_authenticated/mailbox'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
@@ -41,6 +42,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedTimelineRoute = AuthenticatedTimelineRouteImport.update({
   id: '/timeline',
   path: '/timeline',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedRecordRoute = AuthenticatedRecordRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AuthenticatedAppRoute
   '/mailbox': typeof AuthenticatedMailboxRoute
   '/record': typeof AuthenticatedRecordRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/app': typeof AuthenticatedAppRoute
   '/mailbox': typeof AuthenticatedMailboxRoute
   '/record': typeof AuthenticatedRecordRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/_authenticated/app': typeof AuthenticatedAppRoute
   '/_authenticated/mailbox': typeof AuthenticatedMailboxRoute
   '/_authenticated/record': typeof AuthenticatedRecordRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/timeline': typeof AuthenticatedTimelineRoute
   '/_authenticated/choose/$path': typeof AuthenticatedChoosePathRoute
 }
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/mailbox'
     | '/record'
+    | '/settings'
     | '/timeline'
     | '/choose/$path'
   fileRoutesByTo: FileRoutesByTo
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/mailbox'
     | '/record'
+    | '/settings'
     | '/timeline'
     | '/choose/$path'
   id:
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app'
     | '/_authenticated/mailbox'
     | '/_authenticated/record'
+    | '/_authenticated/settings'
     | '/_authenticated/timeline'
     | '/_authenticated/choose/$path'
   fileRoutesById: FileRoutesById
@@ -174,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTimelineRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/record': {
       id: '/_authenticated/record'
       path: '/record'
@@ -209,6 +228,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRoute
   AuthenticatedMailboxRoute: typeof AuthenticatedMailboxRoute
   AuthenticatedRecordRoute: typeof AuthenticatedRecordRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTimelineRoute: typeof AuthenticatedTimelineRoute
   AuthenticatedChoosePathRoute: typeof AuthenticatedChoosePathRoute
 }
@@ -217,6 +237,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRoute,
   AuthenticatedMailboxRoute: AuthenticatedMailboxRoute,
   AuthenticatedRecordRoute: AuthenticatedRecordRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTimelineRoute: AuthenticatedTimelineRoute,
   AuthenticatedChoosePathRoute: AuthenticatedChoosePathRoute,
 }
