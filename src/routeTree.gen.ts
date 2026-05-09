@@ -15,6 +15,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTimelineRouteImport } from './routes/_authenticated/timeline'
 import { Route as AuthenticatedRecordRouteImport } from './routes/_authenticated/record'
+import { Route as AuthenticatedMailboxRouteImport } from './routes/_authenticated/mailbox'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedChoosePathRouteImport } from './routes/_authenticated/choose.$path'
 
@@ -47,6 +48,11 @@ const AuthenticatedRecordRoute = AuthenticatedRecordRouteImport.update({
   path: '/record',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMailboxRoute = AuthenticatedMailboxRouteImport.update({
+  id: '/mailbox',
+  path: '/mailbox',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   id: '/app',
   path: '/app',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRoute
+  '/mailbox': typeof AuthenticatedMailboxRoute
   '/record': typeof AuthenticatedRecordRoute
   '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/app': typeof AuthenticatedAppRoute
+  '/mailbox': typeof AuthenticatedMailboxRoute
   '/record': typeof AuthenticatedRecordRoute
   '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
@@ -83,6 +91,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_authenticated/app': typeof AuthenticatedAppRoute
+  '/_authenticated/mailbox': typeof AuthenticatedMailboxRoute
   '/_authenticated/record': typeof AuthenticatedRecordRoute
   '/_authenticated/timeline': typeof AuthenticatedTimelineRoute
   '/_authenticated/choose/$path': typeof AuthenticatedChoosePathRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/app'
+    | '/mailbox'
     | '/record'
     | '/timeline'
     | '/choose/$path'
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/app'
+    | '/mailbox'
     | '/record'
     | '/timeline'
     | '/choose/$path'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_authenticated/app'
+    | '/_authenticated/mailbox'
     | '/_authenticated/record'
     | '/_authenticated/timeline'
     | '/_authenticated/choose/$path'
@@ -169,6 +181,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRecordRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/mailbox': {
+      id: '/_authenticated/mailbox'
+      path: '/mailbox'
+      fullPath: '/mailbox'
+      preLoaderRoute: typeof AuthenticatedMailboxRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/app': {
       id: '/_authenticated/app'
       path: '/app'
@@ -188,6 +207,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRoute
+  AuthenticatedMailboxRoute: typeof AuthenticatedMailboxRoute
   AuthenticatedRecordRoute: typeof AuthenticatedRecordRoute
   AuthenticatedTimelineRoute: typeof AuthenticatedTimelineRoute
   AuthenticatedChoosePathRoute: typeof AuthenticatedChoosePathRoute
@@ -195,6 +215,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRoute,
+  AuthenticatedMailboxRoute: AuthenticatedMailboxRoute,
   AuthenticatedRecordRoute: AuthenticatedRecordRoute,
   AuthenticatedTimelineRoute: AuthenticatedTimelineRoute,
   AuthenticatedChoosePathRoute: AuthenticatedChoosePathRoute,
