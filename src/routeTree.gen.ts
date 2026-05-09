@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedTimelineRouteImport } from './routes/_authenticated/timeline'
+import { Route as AuthenticatedSubscribeRouteImport } from './routes/_authenticated/subscribe'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedRecordRouteImport } from './routes/_authenticated/record'
 import { Route as AuthenticatedMailboxRouteImport } from './routes/_authenticated/mailbox'
@@ -42,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedTimelineRoute = AuthenticatedTimelineRouteImport.update({
   id: '/timeline',
   path: '/timeline',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSubscribeRoute = AuthenticatedSubscribeRouteImport.update({
+  id: '/subscribe',
+  path: '/subscribe',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/mailbox': typeof AuthenticatedMailboxRoute
   '/record': typeof AuthenticatedRecordRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/subscribe': typeof AuthenticatedSubscribeRoute
   '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/mailbox': typeof AuthenticatedMailboxRoute
   '/record': typeof AuthenticatedRecordRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/subscribe': typeof AuthenticatedSubscribeRoute
   '/timeline': typeof AuthenticatedTimelineRoute
   '/choose/$path': typeof AuthenticatedChoosePathRoute
 }
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/_authenticated/mailbox': typeof AuthenticatedMailboxRoute
   '/_authenticated/record': typeof AuthenticatedRecordRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/subscribe': typeof AuthenticatedSubscribeRoute
   '/_authenticated/timeline': typeof AuthenticatedTimelineRoute
   '/_authenticated/choose/$path': typeof AuthenticatedChoosePathRoute
 }
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/mailbox'
     | '/record'
     | '/settings'
+    | '/subscribe'
     | '/timeline'
     | '/choose/$path'
   fileRoutesByTo: FileRoutesByTo
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/mailbox'
     | '/record'
     | '/settings'
+    | '/subscribe'
     | '/timeline'
     | '/choose/$path'
   id:
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/mailbox'
     | '/_authenticated/record'
     | '/_authenticated/settings'
+    | '/_authenticated/subscribe'
     | '/_authenticated/timeline'
     | '/_authenticated/choose/$path'
   fileRoutesById: FileRoutesById
@@ -186,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTimelineRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/subscribe': {
+      id: '/_authenticated/subscribe'
+      path: '/subscribe'
+      fullPath: '/subscribe'
+      preLoaderRoute: typeof AuthenticatedSubscribeRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -229,6 +248,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMailboxRoute: typeof AuthenticatedMailboxRoute
   AuthenticatedRecordRoute: typeof AuthenticatedRecordRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedSubscribeRoute: typeof AuthenticatedSubscribeRoute
   AuthenticatedTimelineRoute: typeof AuthenticatedTimelineRoute
   AuthenticatedChoosePathRoute: typeof AuthenticatedChoosePathRoute
 }
@@ -238,6 +258,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMailboxRoute: AuthenticatedMailboxRoute,
   AuthenticatedRecordRoute: AuthenticatedRecordRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedSubscribeRoute: AuthenticatedSubscribeRoute,
   AuthenticatedTimelineRoute: AuthenticatedTimelineRoute,
   AuthenticatedChoosePathRoute: AuthenticatedChoosePathRoute,
 }
