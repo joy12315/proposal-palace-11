@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mic, Mail, Lock } from "lucide-react";
+import { GradientText } from "@/components/gradient-text";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -26,7 +27,7 @@ function Index() {
 
       <main className="mx-auto max-w-3xl px-6 pb-24 pt-16 text-center">
         <h1 className="font-serif text-5xl leading-tight md:text-6xl">
-          说一段话，<br />寄给<span className="text-primary">未来的自己</span>。
+          说一段话，<br />寄给<GradientText text="未来的自己" />。
         </h1>
         <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground">
           不是录音机，是声音版的时间胶囊。<br />
