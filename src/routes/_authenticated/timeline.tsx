@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { format } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/timeline")({
-  head: () => ({ meta: [{ title: "时间轴 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "时间轴 — 如果声音记得" }] }),
   component: Timeline,
 });
 

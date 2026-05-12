@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Mail, Check } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/subscribe")({
-  head: () => ({ meta: [{ title: "订阅 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "订阅 — 如果声音记得" }] }),
   component: Subscribe,
 });
 
@@ -15,7 +15,7 @@ function Subscribe() {
         <Mail className="h-7 w-7 text-primary" />
         <h1 className="mt-4 font-serif text-2xl">解锁时间邮局</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          订阅声音胶囊，把声音信寄给未来的自己。
+          订阅如果声音记得，把声音信寄给未来的自己。
         </p>
         <ul className="mt-6 space-y-3 text-sm">
           {["寄给七天后到一年后的自己", "邮局保证按时送达", "无限封信件存放", "随时取消"].map((t) => (

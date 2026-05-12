@@ -11,7 +11,7 @@ function Index() {
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-2 font-serif text-lg">
           <span className="inline-block h-2 w-2 rounded-full bg-primary shadow-[0_0_12px_var(--glow)]" />
-          声音胶囊
+          如果声音记得
         </div>
         <nav className="flex items-center gap-3 text-sm">
           <Link to="/login" className="text-muted-foreground hover:text-foreground">登入</Link>
@@ -60,7 +60,7 @@ function Index() {
       </main>
 
       <footer className="border-t border-border/40 py-8 text-center text-xs text-muted-foreground">
-        声音胶囊 · 为内在对话者而生
+        如果声音记得 · 为内在对话者而生
       </footer>
     </div>
   );

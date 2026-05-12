@@ -74,9 +74,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "声音胶囊 — 写给未来自己的声音信" },
+      { title: "如果声音记得 — 写给未来自己的声音信" },
       { name: "description", content: "为内在对话者打造的私密声音日记与时间邮局。录下此刻，寄给未来。" },
-      { property: "og:title", content: "声音胶囊 — 写给未来自己的声音信" },
+      { property: "og:title", content: "如果声音记得 — 写给未来自己的声音信" },
       { property: "og:description", content: "为内在对话者打造的私密声音日记与时间邮局。" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
