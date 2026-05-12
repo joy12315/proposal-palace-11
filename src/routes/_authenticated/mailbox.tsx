@@ -8,7 +8,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { zhCN } from "date-fns/locale";
 
 export const Route = createFileRoute("/_authenticated/mailbox")({
-  head: () => ({ meta: [{ title: "信箱 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "信箱 — 如果声音记得" }] }),
   component: Mailbox,
 });
 

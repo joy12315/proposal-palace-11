@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "设置 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "设置 — 如果声音记得" }] }),
   component: Settings,
 });
 

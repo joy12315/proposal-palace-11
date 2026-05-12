@@ -5,7 +5,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "登入 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "登入 — 如果声音记得" }] }),
   component: Login,
 });
 
@@ -32,7 +32,7 @@ function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        <Link to="/" className="mb-8 block text-center font-serif text-xl">声音胶囊</Link>
+        <Link to="/" className="mb-8 block text-center font-serif text-xl">如果声音记得</Link>
         <div className="rounded-2xl border border-border bg-card/60 p-8 backdrop-blur">
           <h1 className="font-serif text-2xl">回来了</h1>
           <p className="mt-1 text-sm text-muted-foreground">继续你的声音日记</p>

@@ -6,7 +6,7 @@ import { Lock } from "lucide-react";
 import { format } from "date-fns";
 
 export const Route = createFileRoute("/_authenticated/vault")({
-  head: () => ({ meta: [{ title: "封存 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "封存 — 如果声音记得" }] }),
   component: Vault,
 });
 

@@ -6,7 +6,7 @@ import { Square, Mic } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/record")({
-  head: () => ({ meta: [{ title: "录音 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "录音 — 如果声音记得" }] }),
   component: Record,
 });
 

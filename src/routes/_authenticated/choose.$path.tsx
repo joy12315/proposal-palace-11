@@ -9,7 +9,7 @@ import { z } from "zod";
 
 export const Route = createFileRoute("/_authenticated/choose/$path")({
   validateSearch: z.object({ d: z.coerce.number().default(0) }),
-  head: () => ({ meta: [{ title: "选择归宿 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "选择归宿 — 如果声音记得" }] }),
   component: Choose,
 });
 

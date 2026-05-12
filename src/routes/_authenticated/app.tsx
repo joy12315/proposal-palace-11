@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Mic, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/app")({
-  head: () => ({ meta: [{ title: "今天 — 声音胶囊" }] }),
+  head: () => ({ meta: [{ title: "今天 — 如果声音记得" }] }),
   component: Home,
 });
 
