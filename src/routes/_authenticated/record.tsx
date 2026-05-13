@@ -43,6 +43,9 @@ function Record() {
     }
   };
 
+  const MAX_BYTES = 10 * 1024 * 1024;
+  const MAX_SECONDS = 600;
+
   const stop = async () => {
     if (!recRef.current || !user) return;
     setUploading(true);
@@ -52,6 +55,21 @@ function Record() {
       recRef.current!.stop();
     });
     const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+    if (seconds > MAX_SECONDS) {
+      setUploading(false);
+      setRecording(false);
+      return toast.error("超过 10 分钟，已放弃这段录音");
+    }
+    if (blob.size > MAX_BYTES) {
+      setUploading(false);
+      setRecording(false);
+      return toast.error("录音文件过大（>10MB），无法保存");
+    }
+    if (!blob.type.startsWith("audio/webm")) {
+      setUploading(false);
+      setRecording(false);
+      return toast.error("录音格式不支持");
+    }
     const path = `${user.id}/${Date.now()}.webm`;
     const { error: upErr } = await supabase.storage.from("capsules").upload(path, blob, {
       contentType: "audio/webm",
