@@ -3,18 +3,41 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
 const createSchema = z.object({
-  audio_path: z.string(),
-  duration_seconds: z.number().int().min(0),
+  audio_path: z.string().min(1).max(200),
+  duration_seconds: z.number().int().min(0).max(600),
   destination: z.enum(["vault", "archive", "letter"]),
-  deliver_at: z.string().nullable().optional(),
-  location: z.string().nullable().optional(),
+  deliver_at: z
+    .string()
+    .datetime()
+    .nullable()
+    .optional(),
+  location: z.string().max(120).nullable().optional(),
 });
+
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+const TEN_YEARS_MS = 10 * 365 * ONE_DAY_MS;
 
 export const createCapsule = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => createSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+
+    // path must be `${userId}/<timestamp>.webm`
+    const pathRe = new RegExp(`^${userId}\\/\\d+\\.webm$`);
+    if (!pathRe.test(data.audio_path)) {
+      throw new Error("invalid audio_path");
+    }
+
+    if (data.destination === "letter") {
+      if (!data.deliver_at) throw new Error("deliver_at required for letter");
+      const t = new Date(data.deliver_at).getTime();
+      const now = Date.now();
+      if (t < now + ONE_DAY_MS || t > now + TEN_YEARS_MS) {
+        throw new Error("deliver_at out of range (1 day ~ 10 years)");
+      }
+    }
+
     const { error, data: row } = await supabase
       .from("capsules")
       .insert({
