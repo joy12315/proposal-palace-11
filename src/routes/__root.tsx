@@ -35,7 +35,9 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+  if (import.meta.env.DEV) {
+    console.error(error);
+  }
   const router = useRouter();
 
   return (
@@ -74,6 +76,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "referrer", content: "strict-origin-when-cross-origin" },
+      { httpEquiv: "Permissions-Policy", content: "microphone=(self), camera=(), geolocation=()" },
       { title: "如果声音记得 — 写给未来自己的声音信" },
       { name: "description", content: "为内在对话者打造的私密声音日记与时间邮局。录下此刻，寄给未来。" },
       { property: "og:title", content: "如果声音记得 — 写给未来自己的声音信" },
