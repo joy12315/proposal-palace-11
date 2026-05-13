@@ -1,20 +1,21 @@
-import { createFileRoute, Outlet, useNavigate, Link, useLocation } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { createFileRoute, Outlet, Link, useLocation, redirect } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 import { Mic, Mail, Clock, Settings as SettingsIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated")({
+  beforeLoad: async ({ location }) => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
+      throw redirect({ to: "/login", search: { redirect: location.href } });
+    }
+  },
   component: AuthLayout,
 });
 
 function AuthLayout() {
   const { user, loading } = useAuth();
-  const nav = useNavigate();
   const loc = useLocation();
-
-  useEffect(() => {
-    if (!loading && !user) nav({ to: "/login" });
-  }, [user, loading, nav]);
 
   if (loading || !user) {
     return (
