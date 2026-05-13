@@ -6,31 +6,41 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({ meta: [{ title: "注册 — 如果声音记得" }] }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
+  }),
   component: Signup,
 });
 
 function Signup() {
   const nav = useNavigate();
+  const search = Route.useSearch();
+  const target = search.redirect ?? "/app";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password.length < 10) {
+      return toast.error("密码至少 10 位");
+    }
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: window.location.origin + "/app" },
+      options: { emailRedirectTo: window.location.origin + target },
     });
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("注册成功，欢迎");
-    nav({ to: "/app" });
+    nav({ to: target });
   };
 
   const google = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/app" });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin + target,
+    });
     if (result.error) toast.error("Google 登入失败");
   };
 
@@ -45,7 +55,7 @@ function Signup() {
             <input type="email" required placeholder="邮箱" value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm outline-none focus:ring-1 focus:ring-ring" />
-            <input type="password" required minLength={6} placeholder="密码（至少 6 位）" value={password}
+            <input type="password" required minLength={10} placeholder="密码（至少 10 位）" value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm outline-none focus:ring-1 focus:ring-ring" />
             <button disabled={loading} className="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-50">

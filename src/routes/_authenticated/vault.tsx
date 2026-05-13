@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Lock } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
+
+const UNLOCK_TTL_MS = 60_000;
 
 export const Route = createFileRoute("/_authenticated/vault")({
   head: () => ({ meta: [{ title: "封存 — 如果声音记得" }] }),
@@ -15,6 +18,8 @@ type Row = { id: string; audio_path: string; duration_seconds: number; created_a
 function Vault() {
   const { user } = useAuth();
   const [unlocked, setUnlocked] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [password, setPassword] = useState("");
   const [rows, setRows] = useState<Row[]>([]);
 
   useEffect(() => {
@@ -27,20 +32,64 @@ function Vault() {
       .then(({ data }) => setRows(data ?? []));
   }, [user, unlocked]);
 
+  // auto-lock after TTL
+  useEffect(() => {
+    if (!unlocked) return;
+    const t = window.setTimeout(() => {
+      setUnlocked(false);
+      setRows([]);
+      toast("已自动锁回封存");
+    }, UNLOCK_TTL_MS);
+    return () => window.clearTimeout(t);
+  }, [unlocked]);
+
+  // clear on unmount
+  useEffect(() => {
+    return () => {
+      setUnlocked(false);
+      setRows([]);
+    };
+  }, []);
+
+  const verify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user?.email) return;
+    setVerifying(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password,
+    });
+    setVerifying(false);
+    setPassword("");
+    if (error) return toast.error("密码不正确");
+    setUnlocked(true);
+  };
+
   if (!unlocked) {
     return (
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6 text-center">
         <Lock className="h-7 w-7 text-muted-foreground" />
         <h1 className="mt-4 font-serif text-2xl">封存的声音</h1>
         <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-          这些声音被你藏在黑洞里。<br />确认要打开吗？
+          这些声音被你藏在黑洞里。<br />请输入密码确认是你本人。
         </p>
-        <button
-          onClick={() => setUnlocked(true)}
-          className="mt-8 rounded-full border border-border px-6 py-2.5 text-sm transition hover:bg-secondary"
-        >
-          我想看看
-        </button>
+        <form onSubmit={verify} className="mt-8 w-full max-w-xs space-y-3">
+          <input
+            type="password"
+            required
+            autoFocus
+            placeholder="账户密码"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-lg border border-border bg-input px-4 py-2.5 text-sm outline-none focus:ring-1 focus:ring-ring"
+          />
+          <button
+            disabled={verifying}
+            className="w-full rounded-full border border-border px-6 py-2.5 text-sm transition hover:bg-secondary disabled:opacity-50"
+          >
+            {verifying ? "核对中…" : "解锁（60 秒后自动锁回）"}
+          </button>
+        </form>
       </div>
     );
   }
