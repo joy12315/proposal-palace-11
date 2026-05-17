@@ -1,33 +1,22 @@
-import { createFileRoute, Outlet, Link, useLocation, redirect } from "@tanstack/react-router";
-import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
-import { Mic, Mail, Clock, Settings as SettingsIcon } from "lucide-react";
+import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router";
+import { Mic, Clock, Settings as SettingsIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: async ({ location }) => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
-      throw redirect({ to: "/login", search: { redirect: location.href } });
-    }
-  },
+  // 移除登录验证，游客也可访问
+  // beforeLoad: async ({ location }) => {
+  //   const { data } = await supabase.auth.getUser();
+  //   if (!data.user) {
+  //     throw redirect({ to: "/login", search: { redirect: location.href } });
+  //   }
+  // },
   component: AuthLayout,
 });
 
 function AuthLayout() {
-  const { user, loading } = useAuth();
   const loc = useLocation();
 
-  if (loading || !user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
-        正在打开邮局…
-      </div>
-    );
-  }
-
   const tabs = [
-    { to: "/app", icon: Mic, label: "录" },
-    { to: "/mailbox", icon: Mail, label: "信箱" },
+    { to: "/", icon: Mic, label: "录" },
     { to: "/timeline", icon: Clock, label: "时间轴" },
     { to: "/settings", icon: SettingsIcon, label: "设置" },
   ] as const;

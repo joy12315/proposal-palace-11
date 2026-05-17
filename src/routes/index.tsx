@@ -1,12 +1,23 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Mic, Mail, Lock } from "lucide-react";
 import { GradientText } from "@/components/gradient-text";
+import { useGuest } from "@/hooks/use-guest";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
+  const nav = useNavigate();
+  const { recordings } = useGuest();
+
+  // Count pending letters
+  const pendingLetters = recordings.filter(r =>
+    r.destination === 'letter' &&
+    r.deliverAt &&
+    new Date(r.deliverAt) <= new Date()
+  ).length;
+
   return (
     <div className="min-h-screen">
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
@@ -15,17 +26,28 @@ function Index() {
           如果声音记得
         </div>
         <nav className="flex items-center gap-3 text-sm">
-          <Link to="/login" className="text-muted-foreground hover:text-foreground">登入</Link>
-          <Link
-            to="/signup"
+          <Link to="/_authenticated/timeline" className="text-muted-foreground hover:text-foreground">时间轴</Link>
+          <button
+            onClick={() => nav({ to: "/_authenticated/record" })}
             className="rounded-full bg-primary px-4 py-2 text-primary-foreground transition hover:opacity-90"
           >
-            开始
-          </Link>
+            开始录音
+          </button>
         </nav>
       </header>
 
       <main className="mx-auto max-w-3xl px-6 pb-24 pt-16 text-center">
+        {pendingLetters > 0 && (
+          <Link
+            to="/_authenticated/timeline"
+            className="mx-auto mb-12 flex items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/10 px-5 py-3 text-sm transition hover:bg-primary/15 w-fit"
+          >
+            <Mail className="h-4 w-4 text-primary" />
+            <span className="font-serif">今天有信到了</span>
+            <span className="text-xs text-muted-foreground">去时间轴 →</span>
+          </Link>
+        )}
+
         <h1 className="font-serif text-5xl leading-tight md:text-6xl">
           说一段话，<br />寄给<GradientText text="未来的自己" />。
         </h1>
@@ -35,14 +57,14 @@ function Index() {
         </p>
 
         <div className="mt-12 flex flex-col items-center gap-3">
-          <Link
-            to="/signup"
+          <button
+            onClick={() => nav({ to: "/_authenticated/record" })}
             className="group inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-primary-foreground shadow-[0_8px_30px_var(--glow)] transition hover:scale-[1.02]"
           >
             <Mic className="h-4 w-4" />
             开启你的第一封声音信
-          </Link>
-          <p className="text-xs text-muted-foreground">默认私密，永不强制社交</p>
+          </button>
+          <p className="text-xs text-muted-foreground">默认私密，永不强制社交 · 无需登录</p>
         </div>
 
         <div className="mt-24 grid gap-8 md:grid-cols-3">
